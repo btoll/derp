@@ -12,12 +12,11 @@ const insert = (arr, rightIndex, value) => {
 
 const insertionSort = (arr, n = 1) => {
     if (n >= arr.length) {
-        return n;
+        return;
     }
 
     insert(arr, n - 1, arr[n]);
-
-    return insertionSort(arr, n + 1);
+    insertionSort(arr, n + 1);
 };
 
 // const arr = [3, 5, 7, 11, 13, 2, 9, 6];
