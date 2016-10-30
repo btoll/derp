@@ -29,6 +29,22 @@ const list = {
         }
     },
 
+    deleteHead() {
+        if (list._head) {
+            const next = list._head.next;
+            delete list._head;
+            list._head = next;
+        }
+    },
+
+    deleteList() {
+        while (list._head) {
+            const next = list._head.next;
+            delete list._head;
+            list._head = next;
+        }
+    },
+
     find(data) {
         let item = list._head;
 
@@ -37,6 +53,47 @@ const list = {
         }
 
         return item;
+    },
+
+    /*
+    findNthToLast(n) {
+        let item = list._head;
+        let nthItem = list._head;
+        let i = 0;
+
+        while (item) {
+            item = item.next;
+
+            if (i++ >= n) {
+                nthItem = nthItem.next;
+            }
+        }
+
+        return n > i ?
+            null :
+            nthItem;
+    },
+    */
+
+    findNthToLast(n) {
+        let current = list._head;
+
+        for (let i = 0; i < n; i++) {
+            if (current.next) {
+                current = current.next;
+            } else {
+                current = null;
+            }
+        }
+
+        let behind = list._head;
+
+        while (current && current.next) {
+            current = current.next;
+            behind = behind.next;
+        }
+
+        return behind;
     },
 
     insertFirst(data) {
@@ -62,14 +119,6 @@ const list = {
         return (listItem === null) ?
             list.insertFirst(data) :
             listItem.next = list.create(data);
-    },
-
-    deleteList() {
-        while (list._head) {
-            const next = list._head.next;
-            delete list._head;
-            list._head = next;
-        }
     }
 };
 
@@ -77,9 +126,18 @@ const list = {
 list.insertFirst(5);
 list.insertFirst(42);
 list.insertFirst(100);
+
 list.insertLast(7);
+
 list.delete(list.find(100));
-console.log(list);
+
+list.deleteHead();
+
+list.insertFirst(1972);
+
+console.log(list.findNthToLast(1));
+
 list.deleteList();
+
 console.log(list);
 
