@@ -24,19 +24,35 @@
 
 const bignum = require('bignum');
 
-const compute = (g, e, p) => {
-    const shiftedRight = e.shiftRight(1);
+const modexp = () => {
+    const cache = {};
 
-    if (shiftedRight.lt(2)) {
-        return g.pow(e).mod(p);
-    }
+    return function compute(g, e, p) {
+        const shiftedRight = e.shiftRight(1);
 
-    return bignum(
-        compute(g, shiftedRight, p)
-        * compute(g, shiftedRight, p)
-    ).mod(p);
+        if (shiftedRight.lt(2)) {
+            return g.pow(e).mod(p);
+        }
+
+        if (!cache[shiftedRight]) {
+            return cache[shiftedRight] = bignum(
+                compute(g, shiftedRight, p) * compute(g, shiftedRight, p)
+            ).mod(p);
+        } else {
+            return cache[shiftedRight];
+        }
+    };
 };
 
-const result = compute(bignum(7), bignum(256), bignum(13));
-console.log(result);
+console.log(
+    modexp()(
+        bignum(7), bignum(1024), bignum(13)
+    )
+); // <BigNum 9>
+
+console.log(
+    modexp()(
+        bignum(5), bignum(4096), bignum(19)
+    )
+); // <BigNum 5>
 
