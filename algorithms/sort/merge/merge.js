@@ -1,24 +1,56 @@
-/* eslint-disable no-console */
+'use strict';
 
-const arr = [14, 7, 3, 12, 9, 11, 6, 2];
-// const arr = [14, 7, 3];
+const merge = (array, p, q, r) => {
+    const lowHalf = array.slice(p, q + 1);
+    const highHalf = array.slice(q + 1, r + 1);
 
-// const merge = (leftArray, rightArray) => {
-// };
+    let i = 0;
+    let j = 0;
+    let k = p;
 
-const mergeSort = (arr) => {
-    if (arr.length < 2) {
-        return arr;
+    while (i < lowHalf.length && j < highHalf.length) {
+        if (lowHalf[i] < highHalf[j]) {
+            array[k] = lowHalf[i];
+            i++;
+        } else {
+            array[k] = highHalf[j];
+            j++;
+        }
+
+        k++;
     }
 
-    const mid = Math.floor(arr.length / 2);
+    while (i < lowHalf.length) {
+        array[k] = lowHalf[i];
+        i++;
+        k++;
+    }
 
-    mergeSort(arr.slice(0, mid));
-    mergeSort(arr.slice(mid));
-//    return merge(
-//    );
+    while (j < highHalf.length) {
+        array[k] = highHalf[j];
+        j++;
+        k++;
+    }
 };
 
-mergeSort(arr);
-console.log(arr);
+const mergeSort = (array, p, r) => {
+    if (p >= r) {
+        return array;
+    }
+
+    if (p < r) {
+        const q = Math.floor((p + r) / 2);
+
+        mergeSort(array, p, q);
+        mergeSort(array, q + 1, r);
+        merge(array, p, q, r);
+    }
+
+    return array;
+};
+
+const array = [14, 7, 3, 12, 9, 11, 6, 2];
+
+console.log('array to sort:', array, '\n');
+console.log('      results:', mergeSort(array, 0, array.length - 1));
 
