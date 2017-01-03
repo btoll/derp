@@ -2,7 +2,7 @@
 
 ### Asymptotic Complexity
 
-    θ(n²)
+    Θ(n²)
 
 ### Description of Solution
 
