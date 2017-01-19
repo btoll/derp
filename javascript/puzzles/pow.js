@@ -1,3 +1,44 @@
+// When multiplying powers of `x`, you add the exponents:
+//
+//     x^a * x^b = x^a+b
+//
+// Therefore, if `n` is positive and even:
+//
+//     x^n = x^n/2 * x^n/2
+//
+//         - Compute x^n/2 recursively.
+//         - You can get away with only doing this once and then multiplying
+//           the result by itself!
+//
+//         2^6 = 2^6/3 * 2^6/3
+//         2^6 = 2^3 * 2^3
+//         2^6 = 2^3+3
+//         2^6 = 2^6
+//         64 = 64
+//
+// If `n` is positive and odd:
+//
+//     x^n = x^n - 1 * x
+//
+//     - `(n - 1)` is either 0 or positive and even.
+//     - Compute (n - 1) recursively.
+//
+//         2^7 = 2^7-1 * 2
+//         2^7 = 2^6 * 2
+//         2^7 = 2^6 * 2^1
+//         2^7 = 2^6+1
+//         2^7 = 2^7
+//         128 = 128
+//
+// If `n` is negative:
+//
+//     x^n = 1 / x^-n
+//
+//     - `-n` is a positive number!
+//     - Compute x^-n recursively and take its reciprocal.
+//       i.e., x^n = 1/x^-n
+
+
 //
 // Polyfill Math.pow!
 //
