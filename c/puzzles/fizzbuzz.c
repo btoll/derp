@@ -6,12 +6,12 @@ void main(void) {
     for (i = 0x1; i <= 0x64; i++) {
         fizz = buzz = 0x0;
 
-        if (i % 3 == 0x0) {
+        if (i % 0x3 == 0x0) {
             fizz = 0x3;
             printf("fizz, number %d\n", i);
         }
 
-        if (i % 5 == 0x0) {
+        if (i % 0x5 == 0x0) {
             buzz = 0x5;
             printf("buzz, number %d\n", i);
         }
