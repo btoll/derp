@@ -1,4 +1,4 @@
-#include "selectionSort.h"
+#include "../sortlib.h"
 
 int array[10] = { 188, 9, 7, 1, 5, 7777, 4, 3, 1, -99 };
 unsigned int short len = sizeof(array) / sizeof(int);
@@ -10,11 +10,11 @@ void swap(unsigned int i, unsigned int j) {
 }
 
 unsigned int short findMinIndex(unsigned int short i) {
-    unsigned int short j;
+    unsigned int short j = i + 1;
     unsigned int short minIndex = i;
     unsigned int short minValue = array[i];
 
-    for (j = i + 1; j < len; j++) {
+    for (; j < len; j++) {
         if (array[j] < minValue) {
             minValue = array[j];
             minIndex = j;

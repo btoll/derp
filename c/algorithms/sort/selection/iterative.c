@@ -1,4 +1,4 @@
-#include "selectionSort.h"
+#include "../sortlib.h"
 
 int array[10] = { 188, 9, 7, 1, 5, 7777, 4, 3, 1, -99 };
 unsigned int short len = sizeof(array) / sizeof(int);
