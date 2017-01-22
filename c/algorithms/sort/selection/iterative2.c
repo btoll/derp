@@ -1,20 +1,7 @@
-#include <stdio.h>
+#include "selectionSort.h"
 
 int array[10] = { 188, 9, 7, 1, 5, 7777, 4, 3, 1, -99 };
 unsigned int short len = sizeof(array) / sizeof(int);
-
-void printArray(char *msg) {
-    unsigned int short i;
-
-    printf("\n%s\n\n", msg);
-    printf("\t[");
-
-    for (i = 0; i < len; i++) {
-        printf("%d, ", array[i]);
-    }
-
-    printf("]\n");
-}
 
 void swap(unsigned int i, unsigned int j) {
     unsigned int short tmp = array[i];
@@ -46,8 +33,8 @@ void selectionSort() {
 }
 
 void main(void) {
-    printArray("Before sort:");
+    printArray("Before sort:", array, len);
     selectionSort();
-    printArray("After sort:");
+    printArray("After sort:", array, len);
 }
 
