@@ -1,24 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static struct node *head;
-
 struct node {
-    int data;
     struct node *next;
     struct node *prev;
+    int data;
 };
 
-struct node *addNode(int data) {
+struct node *addNode(struct node **head, int data) {
     struct node *newNode = malloc(sizeof(struct node));
 
-    if (!head) {
-        head = newNode;
-        head->data = data;
-        head->next = NULL;
-        head->prev = NULL;
+    if (*head == NULL) {
+        newNode->data = data;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+        *head = newNode;
     } else {
-        struct node *curr = head;
+        struct node *curr = *head;
 
         while (curr->next != NULL) {
             curr = curr->next;
@@ -33,68 +31,87 @@ struct node *addNode(int data) {
     return newNode;
 }
 
-struct node *getNode(int data) {
-    struct node *copy = head;
+struct node *getNode(struct node *head, int data) {
+    struct node *link = head;
     struct node *found;
 
-    while (copy->data) {
-        if (copy->data == data) {
-            found = copy;
+    while (link && link->data) {
+        if (link->data == data) {
+            found = link;
             break;
         }
 
-        copy = copy->next;
+        link = link->next;
     }
 
     return found;
 }
 
-void removeNode(int data) {
-    struct node *copy = head;
-    struct node *found;
+void removeNode(struct node **head, int data) {
+    struct node *link = *head;
     struct node *prev;
 
-    while (copy->data) {
-        if (copy->data == data) {
-            found = copy;
+    while (link && link->data) {
+        if (link->data == data) {
             break;
         }
 
-        prev = copy;
-        copy = copy->next;
+        prev = link;
+        link = link->next;
     }
 
-    if (found) {
+    if (link) {
         // If the node to be removed is the HEAD.
-        if (copy == head) {
-            head = copy->next;
+        if (link == *head) {
+            struct node *newHead;
+
+            newHead = link->next;
+            newHead->prev = NULL;
+            *head = newHead;
         }
         // If the node to be removed is the TAIL.
-        else if (copy->next == NULL) {
+        else if (link->next == NULL) {
             prev->next = NULL;
         } else {
-            prev->next = found->next;
+            prev->next = link->next;
+            link->next->prev = prev;
         }
 
-        free(found);
+        free(link);
     }
 }
 
 void main(void) {
-    struct node *link = addNode(1);
-    struct node *link2 = addNode(2);
-    struct node *link3 = addNode(4);
-    struct node *link4 = addNode(8);
-    struct node *link5 = addNode(16);
-    struct node *link6 = addNode(32);
-    struct node *link7 = addNode(64);
+    struct node *head = NULL;
 
-    printf("%d\n", getNode(8)->prev->data);
-//     printf("%d\n", getNode(4)->prev->next->data);
-//     printf("%d\n", getNode(32)->data);
-//     removeNode(1);
-//     printf("%d\n", head->data);
-//     removeNode(32);
-//     printf("%d\n", getNode(16)->next->data);
+    struct node *link = addNode(&head, 1);
+    struct node *link2 = addNode(&head, 2);
+    struct node *link3 = addNode(&head, 4);
+    struct node *link4 = addNode(&head, 8);
+    struct node *link5 = addNode(&head, 16);
+    struct node *link6 = addNode(&head, 32);
+    struct node *link7 = addNode(&head, 64);
+
+    printf("%d\n", getNode(head, 8)->prev->data); // 4
+    printf("%d\n", getNode(head, 8)->next->next->data); // 32
+    printf("%d\n", getNode(head, 64)->prev->prev->prev->data); // 8
+    printf("%d\n", getNode(head, 64)->data); // 64
+
+    // Remove TAIL.
+    removeNode(&head, 64);
+    struct node *tail = getNode(head, 32);
+    printf("\n%d\n", tail->prev->data); // 16
+    printf("%d\n", tail->next == NULL); // 1 (true)
+
+    // Remove HEAD.
+    removeNode(&head, 1);
+    printf("\n%d\n", head->data); // 2
+    printf("%d\n", getNode(head, 2) == head); // 1 (true)
+    printf("%d", head->prev == NULL); // 1 (true)
+    printf("\n%d\n", head->next->data); // 4
+
+    removeNode(&head, 8);
+    printf("\n%d\n", getNode(head, 4)->next->data); // 16
+    printf("%d\n", getNode(head, 16)->prev->data); // 4
 }
 
