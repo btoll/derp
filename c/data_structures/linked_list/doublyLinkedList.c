@@ -81,6 +81,16 @@ void removeNode(struct node **head, int data) {
     }
 }
 
+void removeList(struct node **head) {
+    struct node *toDelete = *head;
+
+    while (toDelete) {
+        struct node *next = toDelete->next;
+        free(toDelete);
+        toDelete = next;
+    }
+}
+
 void main(void) {
     struct node *head = NULL;
 
@@ -113,5 +123,7 @@ void main(void) {
     removeNode(&head, 8);
     printf("\n%d\n", getNode(head, 4)->next->data); // 16
     printf("%d\n", getNode(head, 16)->prev->data); // 4
+
+    removeList(&head);
 }
 
