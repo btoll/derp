@@ -1,3 +1,6 @@
+// This implementation has both HEAD and TAIL pointers.
+// As a fun exercise, the HEAD and TAIL are passed to the functions as pointers to the pointers.
+//
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -92,6 +95,20 @@ struct node *insertAfter(struct node **head, struct node **tail, struct node *el
     return NULL;
 }
 
+int removeHead(struct node **head, struct node **tail) {
+    struct node *newHead;
+
+    if (head && *head) {
+        newHead = (*head)->next;
+        free(*head);
+        *head = newHead;
+
+        if (*head == NULL) {
+            *tail = NULL;
+        }
+    }
+}
+
 int removeNode(struct node **head, struct node **tail, struct node *toRemove) {
     struct node *curPos = *head;
 
@@ -149,13 +166,19 @@ void main(void) {
 
     struct node *link1= addNode(&head, &tail, 1);
     struct node *link2 = addNode(&head, &tail, 2);
-    struct node *link3 = addNode(&head, &tail, 4);
-    struct node *link4 = addNode(&head, &tail, 8);
-    struct node *link5 = addNode(&head, &tail, 16);
-    struct node *link6 = addNode(&head, &tail, 32);
-    struct node *link7 = addNode(&head, &tail, 64);
+//     struct node *link3 = addNode(&head, &tail, 4);
+//     struct node *link4 = addNode(&head, &tail, 8);
+//     struct node *link5 = addNode(&head, &tail, 16);
+//     struct node *link6 = addNode(&head, &tail, 32);
+//     struct node *link7 = addNode(&head, &tail, 64);
 
     printf("%d\n", head->data);
     printf("%d\n", tail->data);
+    removeHead(&head, &tail);
+    printf("%d\n", head->data);
+    printf("%d\n", tail->data);
+    removeHead(&head, &tail);
+    printf("%d\n", head);
+    printf("%d\n", tail);
 }
 
