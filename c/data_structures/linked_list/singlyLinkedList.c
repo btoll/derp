@@ -6,7 +6,7 @@ struct node {
     int data;
 };
 
-struct node *addNode(struct node **head, int data) {
+struct node *addNode(struct node **head, struct node **tail, int data) {
     struct node *newNode;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
@@ -18,43 +18,96 @@ struct node *addNode(struct node **head, int data) {
         newNode->data = data;
         newNode->next = NULL;
         *head = newNode;
+        *tail = newNode;
     } else {
         struct node *curr = *head;
 
-        while (curr->next != NULL) {
+        while (curr->next) {
             curr = curr->next;
         }
 
         curr->next = newNode;
         newNode->data = data;
         newNode->next = NULL;
+
+        if (newNode->next == NULL) {
+            *tail = newNode;
+        }
     }
 
     return newNode;
 }
 
-struct node *getNode(struct node *head, int data) {
-    struct node *found = NULL;
-    struct node *link = head;
+struct node *insertAfter(struct node **head, struct node **tail, struct node *elem, int data) {
+    struct node *newNode, *curPos = *head;
 
-    while (link && link->data) {
-        if (link->data == data) {
-            found = link;
-            break;
-        }
-
-        link = link->next;
+    if (!(newNode = malloc(sizeof(struct node)))) {
+        printf("Could not allocate memory for new node!");
+        exit(1);
     }
 
-    return found;
+    if (elem == NULL) {
+        if (*head == NULL) {
+            newNode->data = data;
+            newNode->next = NULL;
+
+            *head = newNode;
+            *tail = newNode;
+
+            return newNode;
+        } else {
+            newNode->data = data;
+            newNode->next = *head;
+
+            *head = newNode;
+
+            if (*tail == NULL) {
+                *tail = newNode;
+            }
+
+            return newNode;
+        }
+    }
+
+    while (curPos) {
+        if (curPos == elem) {
+            newNode->data = data;
+            newNode->next = curPos->next;
+            curPos->next = newNode;
+
+            // Update TAIL pointer if the new node is the last.
+            if (newNode->next == NULL) {
+                *tail = newNode;
+            }
+
+            return newNode;
+        }
+
+        curPos = curPos->next;
+    }
+
+    // Insert position not found, free newNode memory!
+    free(newNode);
+
+    return NULL;
 }
 
-int removeNode(struct node **head, struct node *toRemove) {
+int removeNode(struct node **head, struct node **tail, struct node *toRemove) {
     struct node *curPos = *head;
+
+    if (toRemove == NULL) {
+        return 1;
+    }
 
     if (*head == toRemove) {
         *head = toRemove->next;
         free(toRemove);
+
+        // Special case for one element list.
+        if (*head == NULL) {
+            *tail == NULL;
+        }
+
         return 0;
     }
 
@@ -62,6 +115,12 @@ int removeNode(struct node **head, struct node *toRemove) {
         if (curPos->next == toRemove) {
             curPos->next = toRemove->next;
             free(toRemove);
+
+            // Update TAIL pointer when deleting the last element.
+            if (curPos->next == NULL) {
+                *tail = curPos;
+            }
+
             return 0;
         }
 
@@ -71,7 +130,7 @@ int removeNode(struct node **head, struct node *toRemove) {
     return 1;
 }
 
-void removeList(struct node **head) {
+void removeList(struct node **head, struct node **tail) {
     struct node *toDelete = *head;
 
     while (toDelete) {
@@ -79,27 +138,24 @@ void removeList(struct node **head) {
         free(toDelete);
         toDelete = next;
     }
+
+    *head = NULL;
+    *tail = NULL;
 }
 
 void main(void) {
     struct node *head = NULL;
+    struct node *tail = NULL;
 
-    struct node *link = addNode(&head, 1);
-    struct node *link2 = addNode(&head, 2);
-    struct node *link3 = addNode(&head, 4);
-    struct node *link4 = addNode(&head, 8);
-    struct node *link5 = addNode(&head, 16);
-    struct node *link6 = addNode(&head, 32);
-    struct node *link7 = addNode(&head, 64);
+    struct node *link1= addNode(&head, &tail, 1);
+    struct node *link2 = addNode(&head, &tail, 2);
+    struct node *link3 = addNode(&head, &tail, 4);
+    struct node *link4 = addNode(&head, &tail, 8);
+    struct node *link5 = addNode(&head, &tail, 16);
+    struct node *link6 = addNode(&head, &tail, 32);
+    struct node *link7 = addNode(&head, &tail, 64);
 
-//     printf("%d\n", getNode(head, 32)->data); // 32
-    removeNode(&head, link7);
-    printf("%d\n", link6->next == NULL);
-
-//     printf("%d\n", head->data); // 2
-//     removeNode(&head, 32);
-//     printf("%d\n", getNode(head, 16)->next->data); // 64
-
-//     removeList(&head);
+    printf("%d\n", head->data);
+    printf("%d\n", tail->data);
 }
 
