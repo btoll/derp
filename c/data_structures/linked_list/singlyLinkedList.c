@@ -49,33 +49,26 @@ struct node *getNode(struct node *head, int data) {
     return found;
 }
 
-void removeNode(struct node **head, int data) {
-    struct node *link = *head;
-    struct node *prev;
+int removeNode(struct node **head, struct node *toRemove) {
+    struct node *curPos = *head;
 
-    while (link && link->data) {
-        if (link->data == data) {
-            break;
-        }
-
-        prev = link;
-        link = link->next;
+    if (*head == toRemove) {
+        *head = toRemove->next;
+        free(toRemove);
+        return 0;
     }
 
-    if (link) {
-        // If the node to be removed is the HEAD.
-        if (link == *head) {
-            *head = link->next;
-        }
-        // If the node to be removed is the TAIL.
-        else if (link->next == NULL) {
-            prev->next = NULL;
-        } else {
-            prev->next = link->next;
+    while (curPos) {
+        if (curPos->next == toRemove) {
+            curPos->next = toRemove->next;
+            free(toRemove);
+            return 0;
         }
 
-        free(link);
+        curPos = curPos->next;
     }
+
+    return 1;
 }
 
 void removeList(struct node **head) {
@@ -99,12 +92,14 @@ void main(void) {
     struct node *link6 = addNode(&head, 32);
     struct node *link7 = addNode(&head, 64);
 
-    printf("%d\n", getNode(head, 32)->data); // 32
-    removeNode(&head, 1);
-    printf("%d\n", head->data); // 2
-    removeNode(&head, 32);
-    printf("%d\n", getNode(head, 16)->next->data); // 64
+//     printf("%d\n", getNode(head, 32)->data); // 32
+    removeNode(&head, link7);
+    printf("%d\n", link6->next == NULL);
 
-    removeList(&head);
+//     printf("%d\n", head->data); // 2
+//     removeNode(&head, 32);
+//     printf("%d\n", getNode(head, 16)->next->data); // 64
+
+//     removeList(&head);
 }
 
