@@ -1,16 +1,20 @@
-// This implementation has both HEAD and TAIL pointers.
-// As a fun exercise, the HEAD and TAIL are passed to the functions as pointers to the pointers.
-//
-#include "linkedList.h"
 #include <stdio.h>
 #include <stdlib.h>
+// #include "linkedList.h"
 
 struct node {
     struct node *next;
+    struct node *prev;
+    struct node *child;
     int data;
 };
 
-struct node *addNode(struct node **head, struct node **tail, int data) {
+struct list {
+    struct node *head;
+    struct node *tail;
+};
+
+struct node *addNode(struct list **list, int data) {
     struct node *newNode;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
@@ -18,13 +22,14 @@ struct node *addNode(struct node **head, struct node **tail, int data) {
         exit(1);
     }
 
-    if (*head == NULL) {
+    if ((*list)->head == NULL) {
         newNode->data = data;
         newNode->next = NULL;
-        *head = newNode;
-        *tail = newNode;
+        newNode->prev = NULL;
+        (*list)->head = newNode;
+        (*list)->tail = newNode;
     } else {
-        struct node *curr = *head;
+        struct node *curr = (*list)->head;
 
         while (curr->next) {
             curr = curr->next;
@@ -33,17 +38,18 @@ struct node *addNode(struct node **head, struct node **tail, int data) {
         curr->next = newNode;
         newNode->data = data;
         newNode->next = NULL;
+        newNode->prev = curr;
 
         if (newNode->next == NULL) {
-            *tail = newNode;
+            (*list)->tail = newNode;
         }
     }
 
     return newNode;
 }
 
-struct node *insertAfter(struct node **head, struct node **tail, struct node *elem, int data) {
-    struct node *newNode, *curPos = *head;
+struct node *insertAfter(struct list **list, struct node *elem, int data) {
+    struct node *newNode, *curPos = (*list)->head;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
         printf("Could not allocate memory for new node!");
@@ -51,22 +57,22 @@ struct node *insertAfter(struct node **head, struct node **tail, struct node *el
     }
 
     if (elem == NULL) {
-        if (*head == NULL) {
+        if ((*list)->head == NULL) {
             newNode->data = data;
             newNode->next = NULL;
 
-            *head = newNode;
-            *tail = newNode;
+            (*list)->head = newNode;
+            (*list)->tail = newNode;
 
             return newNode;
         } else {
             newNode->data = data;
-            newNode->next = *head;
+            newNode->next = (*list)->head;
 
-            *head = newNode;
+            (*list)->head = newNode;
 
-            if (*tail == NULL) {
-                *tail = newNode;
+            if ((*list)->tail == NULL) {
+                (*list)->tail = newNode;
             }
 
             return newNode;
@@ -81,7 +87,7 @@ struct node *insertAfter(struct node **head, struct node **tail, struct node *el
 
             // Update TAIL pointer if the new node is the last.
             if (newNode->next == NULL) {
-                *tail = newNode;
+                (*list)->tail = newNode;
             }
 
             return newNode;
@@ -96,59 +102,51 @@ struct node *insertAfter(struct node **head, struct node **tail, struct node *el
     return NULL;
 }
 
-int removeHead(struct node **head, struct node **tail) {
-    struct node *newHead;
+void printNodes(struct list *list) {
+    struct node *link = list->head;
 
-    if (head && *head) {
-        newHead = (*head)->next;
-        free(*head);
-        *head = newHead;
-
-        if (*head == NULL) {
-            *tail = NULL;
-        }
+    while (link) {
+        printf("node->data: %4d\n", link->data);
+        link = link->next;
     }
 }
 
-int removeNode(struct node **head, struct node **tail, struct node *toRemove) {
-    struct node *curPos = *head;
+void removeNode(struct node **head, int data) {
+    struct node *link = *head;
+    struct node *prev;
 
-    if (toRemove == NULL) {
-        return 1;
-    }
-
-    if (*head == toRemove) {
-        *head = toRemove->next;
-        free(toRemove);
-
-        // Special case for one element list.
-        if (*head == NULL) {
-            *tail == NULL;
+    while (link && link->data) {
+        if (link->data == data) {
+            break;
         }
 
-        return 0;
+        prev = link;
+        link = link->next;
     }
 
-    while (curPos) {
-        if (curPos->next == toRemove) {
-            curPos->next = toRemove->next;
-            free(toRemove);
+    if (link) {
+        // If the node to be removed is the HEAD.
+        if (link == *head) {
+            struct node *newHead;
 
-            // Update TAIL pointer when deleting the last element.
-            if (curPos->next == NULL) {
-                *tail = curPos;
-            }
-
-            return 0;
+            newHead = link->next;
+            newHead->prev = NULL;
+            *head = newHead;
+        }
+        // If the node to be removed is the TAIL.
+        else if (link->next == NULL) {
+            prev->next = NULL;
+        } else {
+            prev->next = link->next;
+            link->next->prev = prev;
         }
 
-        curPos = curPos->next;
+        free(link);
     }
-
-    return 1;
 }
 
-void removeList(struct node **head, struct node **tail) {
+/*
+void removeList(struct node **head) {
     struct node *toDelete = *head;
 
     while (toDelete) {
@@ -156,8 +154,17 @@ void removeList(struct node **head, struct node **tail) {
         free(toDelete);
         toDelete = next;
     }
+}
+*/
 
-    *head = NULL;
-    *tail = NULL;
+struct list *makeList(void) {
+    struct list *newList;
+
+    if (!(newList = malloc(sizeof(struct node)))) {
+        printf("Could not allocate memory for new node!");
+        exit(1);
+    }
+
+    return newList;
 }
 
