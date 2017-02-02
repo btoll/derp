@@ -1,17 +1,30 @@
 #include "../../include/linkedList.c"
 
-struct list *flatten(struct list **to, struct list **from, struct node *link) {
-    while (link) {
-        if (link->data)
-            addNode(to, link->data);
+void append(struct list **list, struct node *link) {
+    struct node *oldTail = (*list)->tail;
+    struct node *curNode;
 
-        if (link->child)
-            flatten(to, from, link->child);
+    oldTail->next = link;
+    link->prev = oldTail;
+
+    // Here we just want to advance the current node until we can set the new TAIL.
+    for (curNode = link; curNode->next; curNode = curNode->next)
+        ;
+
+    (*list)->tail = curNode;
+
+}
+
+struct list *flatten(struct list **list, struct node *link) {
+    while (link) {
+        if (link->child) {
+            append(list, link->child);
+        }
 
         link = link->next;
     }
 
-    return *to;
+    return *list;
 }
 
 void main(void) {
@@ -60,10 +73,9 @@ void main(void) {
     list5->head->child = list7->head;
     list6->head->child = list8->head;
 
-    // Flatten the lists into one (non-destructive) and print.
-    struct list *flattened = makeList();
+    // Flatten the lists into one (destructive) and print.
     printNodes(
-        flatten(&flattened, &list1, list1->head)
+        flatten(&list1, list1->head)
     );
 }
 
