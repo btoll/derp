@@ -1,4 +1,22 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, no-constant-condition */
+
+const isCyclic = list => {
+    let slow = list._head;
+    let fast = list._head.next;
+
+    while (true) {
+        if (!fast || !fast.next) {
+            return false;
+        }
+
+        if (slow !== fast) {
+            slow = slow.next;
+            fast = fast.next.next;
+        } else {
+            return true;
+        }
+    }
+};
 
 const list = {
     _head: null,
@@ -101,8 +119,8 @@ const list = {
     },
 
     insertAfter(prev, data) {
-        const after = prev.next;
         const newNode = list.create(data);
+        const after = prev.next;
 
         newNode.prev = prev;
         newNode.next = after;
@@ -126,14 +144,6 @@ const list = {
     }
 };
 
-
-// list.add(7);
-// list.add(5);
-// list.append(42);
-// list.delete(list.find(7));
-// list.deleteHead();
-// list.append(666);
-
 // 17 -> 3 -> 100 -> 42 -> 5 -> 1972
 
 list.add(1972);
@@ -142,10 +152,14 @@ list.add(42);
 const n100 = list.add(100);
 list.add(3);
 list.add(17);
+list.append(666);
 
 list.insertAfter(n100, 200);
+// list.print();
 
-// 17 -> 3 -> 100 -> 200 -> 42 -> 5 -> 1972
+// 17 -> 3 -> 100 -> 200 -> 42 -> 5 -> 1972 -> 666
 
-list.print();
+console.log(isCyclic(list));
+list._tail.next = n100;
+console.log(isCyclic(list));
 

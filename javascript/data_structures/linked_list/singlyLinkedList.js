@@ -10,6 +10,31 @@ const list = {
         };
     },
 
+    add(data) {
+        const newItem = list.create(data);
+
+        if (!list._head) {
+            list._head = newItem;
+        } else {
+            newItem.next = list._head;
+            list._head = newItem;
+        }
+
+        return newItem;
+    },
+
+    append(data) {
+        let listItem = list._head;
+
+        while (listItem !== null && listItem.next) {
+            listItem = listItem.next;
+        }
+
+        return (listItem === null) ?
+            list.add(data) :
+            listItem.next = list.create(data);
+    },
+
     delete(toRemove) {
         let item = list._head;
 
@@ -96,48 +121,34 @@ const list = {
         return behind;
     },
 
-    insertFirst(data) {
-        const newItem = list.create(data);
+    print() {
+        let head = list._head;
 
-        if (!list._head) {
-            list._head = newItem;
-        } else {
-            newItem.next = list._head;
-            list._head = newItem;
+        while (head) {
+            console.log(head.data);
+            head = head.next;
         }
-
-        return newItem;
-    },
-
-    insertLast(data) {
-        let listItem = list._head;
-
-        while (listItem !== null && listItem.next) {
-            listItem = listItem.next;
-        }
-
-        return (listItem === null) ?
-            list.insertFirst(data) :
-            listItem.next = list.create(data);
     }
 };
 
+// 17 -> 3 -> 100 -> 42 -> 5 -> 1972
 
-list.insertFirst(5);
-list.insertFirst(42);
-list.insertFirst(100);
+list.add(1972);
+list.add(5);
+list.add(42);
+list.add(100);
+list.add(3);
+list.add(17);
 
-list.insertLast(7);
+// list.delete(list.find(100));
 
-list.delete(list.find(100));
+// list.deleteHead();
 
-list.deleteHead();
 
-list.insertFirst(1972);
+// console.log(list.findNthToLast(1));
 
-console.log(list.findNthToLast(1));
+// list.deleteList();
 
-list.deleteList();
-
-console.log(list);
+// console.log(list);
+list.print();
 
