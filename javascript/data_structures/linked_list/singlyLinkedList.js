@@ -10,7 +10,7 @@ const list = {
         };
     },
 
-    add(data) {
+    addNode(data) {
         const newItem = list.create(data);
 
         if (!list._head) {
@@ -23,7 +23,7 @@ const list = {
         return newItem;
     },
 
-    append(data) {
+    appendNode(data) {
         let listItem = list._head;
 
         while (listItem !== null && listItem.next) {
@@ -31,11 +31,11 @@ const list = {
         }
 
         return (listItem === null) ?
-            list.add(data) :
+            list.addNode(data) :
             listItem.next = list.create(data);
     },
 
-    delete(toRemove) {
+    deleteNode(toRemove) {
         let item = list._head;
 
         if (item === toRemove) {
@@ -70,7 +70,7 @@ const list = {
         }
     },
 
-    find(data) {
+    findNode(data) {
         let item = list._head;
 
         while (item !== null && item.data !== data) {
@@ -80,48 +80,16 @@ const list = {
         return item;
     },
 
-    /*
-    findNthToLast(n) {
-        let item = list._head;
-        let nthItem = list._head;
-        let i = 0;
+    insertAfter(prev, data) {
+        const newNode = list.create(data);
 
-        while (item) {
-            item = item.next;
+        newNode.next = prev.next;
+        prev.next = newNode;
 
-            if (i++ >= n) {
-                nthItem = nthItem.next;
-            }
-        }
-
-        return n > i ?
-            null :
-            nthItem;
-    },
-    */
-
-    findNthToLast(n) {
-        let current = list._head;
-
-        for (let i = 0; i < n; i++) {
-            if (current.next) {
-                current = current.next;
-            } else {
-                current = null;
-            }
-        }
-
-        let behind = list._head;
-
-        while (current && current.next) {
-            current = current.next;
-            behind = behind.next;
-        }
-
-        return behind;
+        return newNode;
     },
 
-    print() {
+    printNodes() {
         let head = list._head;
 
         while (head) {
@@ -131,24 +99,5 @@ const list = {
     }
 };
 
-// 17 -> 3 -> 100 -> 42 -> 5 -> 1972
-
-list.add(1972);
-list.add(5);
-list.add(42);
-list.add(100);
-list.add(3);
-list.add(17);
-
-// list.delete(list.find(100));
-
-// list.deleteHead();
-
-
-// console.log(list.findNthToLast(1));
-
-// list.deleteList();
-
-// console.log(list);
-list.print();
+module.exports = list;
 

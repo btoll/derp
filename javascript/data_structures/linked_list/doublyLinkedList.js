@@ -12,7 +12,7 @@ const list = {
         };
     },
 
-    add(data) {
+    addNode(data) {
         const newHead = list.create(data);
 
         if (!list._head) {
@@ -28,7 +28,7 @@ const list = {
         return newHead;
     },
 
-    append(data) {
+    appendNode(data) {
         let newTail;
 
         if (!list._tail) {
@@ -45,7 +45,25 @@ const list = {
         return newTail;
     },
 
-    delete(toRemove) {
+    deleteHead() {
+        if (list._head) {
+            const next = list._head.next;
+
+            delete list._head;
+            list._head = next;
+            list._head.prev = null;
+        }
+    },
+
+    deleteList() {
+        while (list._head) {
+            const next = list._head.next;
+            delete list._head;
+            list._head = next;
+        }
+    },
+
+    deleteNode(toRemove) {
         let head = list._head;
 
         if (head === toRemove) {
@@ -72,25 +90,7 @@ const list = {
         }
     },
 
-    deleteHead() {
-        if (list._head) {
-            const next = list._head.next;
-
-            delete list._head;
-            list._head = next;
-            list._head.prev = null;
-        }
-    },
-
-    deleteList() {
-        while (list._head) {
-            const next = list._head.next;
-            delete list._head;
-            list._head = next;
-        }
-    },
-
-    find(data) {
+    findNode(data) {
         let item = list._head;
 
         while (item !== null && item.data !== data) {
@@ -101,8 +101,8 @@ const list = {
     },
 
     insertAfter(prev, data) {
-        const after = prev.next;
         const newNode = list.create(data);
+        const after = prev.next;
 
         newNode.prev = prev;
         newNode.next = after;
@@ -116,7 +116,7 @@ const list = {
         return newNode;
     },
 
-    print() {
+    printNodes() {
         let head = list._head;
 
         while (head) {
@@ -125,27 +125,4 @@ const list = {
         }
     }
 };
-
-
-// list.add(7);
-// list.add(5);
-// list.append(42);
-// list.delete(list.find(7));
-// list.deleteHead();
-// list.append(666);
-
-// 17 -> 3 -> 100 -> 42 -> 5 -> 1972
-
-list.add(1972);
-list.add(5);
-list.add(42);
-const n100 = list.add(100);
-list.add(3);
-list.add(17);
-
-list.insertAfter(n100, 200);
-
-// 17 -> 3 -> 100 -> 200 -> 42 -> 5 -> 1972
-
-list.print();
 
