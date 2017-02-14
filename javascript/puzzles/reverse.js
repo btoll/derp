@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const reverse = s => {
     const a = s.split('');
     let tmp;
