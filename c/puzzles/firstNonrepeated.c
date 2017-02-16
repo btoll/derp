@@ -15,10 +15,9 @@ int firstNonrepeated(char *s) {
             chars[s[i]] = chars[s[i]] + 1;
     }
 
-    for (i = 0; i < len; i++) {
+    for (i = 0; i < len; i++)
         if (chars[s[i]] == 1)
             return s[i];
-    }
 
     return -1;
 }
