@@ -11,7 +11,7 @@ struct node *addNode(struct node **head, int data) {
     struct node *newNode;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
+        fprintf(stderr, "Could not allocate memory for new node!");
         exit(1);
     }
 

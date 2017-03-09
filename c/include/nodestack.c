@@ -16,7 +16,7 @@ struct stack *initStack(void) {
     struct stack *newStack;
 
     if (!(newStack = malloc(sizeof(struct stack)))) {
-        printf("Could not allocate memory for new stack!");
+        fprintf(stderr, "Could not allocate memory for new stack!");
         exit(1);
     }
 
@@ -31,7 +31,7 @@ void push(struct stack **stack, struct node *node) {
     struct frame *oldTop;
 
     if (!(newFrame = malloc(sizeof(struct frame)))) {
-        printf("Could not allocate memory for new frame!");
+        fprintf(stderr, "Could not allocate memory for new frame!");
         exit(1);
     }
 

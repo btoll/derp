@@ -1,0 +1,77 @@
+#include "../binaryTree.c"
+
+// Perform a preorder traversal of the BST where the result is: { 100, 50, 25, 75, 150, 125, 110, 175 }
+//
+//
+//              __ 100 __
+//             /         \
+//         50              150
+//       /    \          /     \
+//     25      75      125     175
+//                   /
+//                 110
+//
+//
+
+void traverse(int *tree, struct node *node, int *n) {
+    *(tree + *n) = node->value;
+
+    struct node *left = node->left;
+
+    while (left) {
+        *(tree + (++*n)) = left->value;
+        left = left->left;
+    }
+
+    struct node *right = node->right;
+    while (right) {
+        *(tree + (++*n)) = right->value;
+        right = right->right;
+    }
+}
+
+int n = 0;
+int *preorder(int *tree, struct node *root) {
+    struct node *node = root, *left, *right;
+
+    *(tree + n) = node->value;
+
+    n++;
+    traverse(tree, node->left, &n);
+
+    n++;
+    traverse(tree, node->right, &n);
+}
+
+int main(void) {
+    int tree[8];
+
+    struct node *root = makeNode(100);
+    struct node *a = makeNode(50);
+    struct node *b = makeNode(150);
+    struct node *c = makeNode(25);
+    struct node *d = makeNode(75);
+    struct node *e = makeNode(125);
+    struct node *f = makeNode(175);
+    struct node *g = makeNode(110);
+
+    root->left = a;
+    root->right = b;
+
+    a->left = c;
+    a->right = d;
+
+    b->left = e;
+    b->right = f;
+
+    e->left = g;
+
+    preorder(tree, root);
+
+    for (n = 0; n < 8; n++) {
+        printf("%d\n", tree[n]);
+    }
+
+    return 0;
+}
+

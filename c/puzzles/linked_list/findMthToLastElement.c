@@ -18,7 +18,7 @@ struct node *findMth(struct node *head, int m) {
     }
 
     if (m > len) {
-        printf("Out of bounds");
+        fprintf(stderr, "Out of bounds");
         exit(1);
     }
 

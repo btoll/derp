@@ -18,7 +18,7 @@ struct node *addNode(struct list **list, int data) {
     struct node *newNode;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
+        fprintf(stderr, "Could not allocate memory for new node!");
         exit(1);
     }
 
@@ -52,7 +52,7 @@ struct node *insertAfter(struct list **list, struct node *elem, int data) {
     struct node *newNode, *curPos = (*list)->head;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
+        fprintf(stderr, "Could not allocate memory for new node!");
         exit(1);
     }
 
@@ -100,6 +100,17 @@ struct node *insertAfter(struct list **list, struct node *elem, int data) {
     free(newNode);
 
     return NULL;
+}
+
+struct list *makeList(void) {
+    struct list *newList;
+
+    if (!(newList = malloc(sizeof(struct node)))) {
+        fprintf(stderr, "Could not allocate memory for new node!");
+        exit(1);
+    }
+
+    return newList;
 }
 
 void printNodes(struct list *list) {
@@ -156,15 +167,4 @@ void removeList(struct node **head) {
     }
 }
 */
-
-struct list *makeList(void) {
-    struct list *newList;
-
-    if (!(newList = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
-        exit(1);
-    }
-
-    return newList;
-}
 

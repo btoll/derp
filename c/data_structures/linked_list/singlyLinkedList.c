@@ -13,7 +13,7 @@ struct node *addNode(struct node **head, struct node **tail, int data) {
     struct node *newNode;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
+        fprintf(stderr, "Could not allocate memory for new node!");
         exit(1);
     }
 
@@ -45,7 +45,7 @@ struct node *insertAfter(struct node **head, struct node **tail, struct node *el
     struct node *newNode, *curPos = *head;
 
     if (!(newNode = malloc(sizeof(struct node)))) {
-        printf("Could not allocate memory for new node!");
+        fprintf(stderr, "Could not allocate memory for new node!");
         exit(1);
     }
 
