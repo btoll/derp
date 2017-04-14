@@ -26,5 +26,5 @@ Inversely, the worst case scenario of the array (and thus the subarray) will be 
 4. If the current element is greater than or equal to the element to its left, do nothing.
 5. Repeat until the array is sorted.
 
-[selection sort]:/sort/selection
+[selection sort]:/javascript/algorithms/sort/selection/
 

@@ -25,5 +25,5 @@ Unlike its cousin the [merge sort], quicksort sorts in-place. This may be a sign
 
 ### Steps
 
-[merge sort]: /algorithms/sort/merge
+[merge sort]: /javascript/algorithms/sort/merge/
 

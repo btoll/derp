@@ -29,5 +29,5 @@ Note that every element in the array must be checked, so this algorithm doesn't 
 3. Find the third smallest number and swap it with the third number.
 4. Repeat until the array is sorted.
 
-[insertion sort]: /algorithms/sort/insertion
+[insertion sort]: /javascript/algorithms/sort/insertion/
 
