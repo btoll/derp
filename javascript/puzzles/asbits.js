@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-'use strict';
 
 const getbits = (s, p, n) =>
     s >> (p + 1 - n) & ~(~0 << n);

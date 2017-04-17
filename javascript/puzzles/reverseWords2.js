@@ -1,5 +1,3 @@
-/* eslint-disable no-console, curly */
-
 const reverse = (s, m, n) => {
     const a = s.slice(m, n).split('');
 

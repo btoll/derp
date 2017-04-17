@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 for (let i = 0; i < 100; i++) {
     let fizzbuzz = 0;
 

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const reverseWords = s => {
     const words = s.split(' ');
     let tmp;

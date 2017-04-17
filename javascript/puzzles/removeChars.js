@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // Remove all vowels to produce the sentence 'Bttl f th Vwls: Hw vs. Grzny'.
 
 const removeChars = (s, toRemove) => {

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // Faster than Math.floor(n) the greater the input, i.e., 1,000,000.
 const floor = n =>
     n >> 0;

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const walkObject = (o, str) => {
     const idx = str.indexOf('.');
 

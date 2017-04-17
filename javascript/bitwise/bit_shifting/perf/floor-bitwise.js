@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const n = process.argv[2];
 
 console.log(`bitwise, ${n} iterations`);

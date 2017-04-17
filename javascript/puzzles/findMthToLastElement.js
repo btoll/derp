@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const list = require('../include/linkedList');
 
 const findMthToLastElement = n => {

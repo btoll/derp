@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // This version is different from iterative.js in that the important index is the `dropIndex` rather than the `rightIndex`.
 // This means that we don't have to increment the index when we insert the `key` value.
 const insert = (array, dropIndex) => {

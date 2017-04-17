@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const stack = {
     _head: null,
 

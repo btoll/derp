@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // Will round down.
 const halve = n =>
     n >> 1;

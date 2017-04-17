@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // Will round down.
 const double = n =>
     n << 1;

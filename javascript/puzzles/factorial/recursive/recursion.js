@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const factorial = n => {
     if (n < 2) {
         return n;

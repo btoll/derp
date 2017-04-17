@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const isInArray = (target, arr) => {
     const min = 0;
     const max = arr.length - 1;

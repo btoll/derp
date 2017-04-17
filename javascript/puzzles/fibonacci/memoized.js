@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const fibonacci = (n, cache = {}) => {
     if (n < 2) {
         return n;

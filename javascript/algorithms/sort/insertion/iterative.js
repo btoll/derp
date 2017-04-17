@@ -20,7 +20,7 @@ const insertionSort = arr => {
     }
 };
 
-const arr = [5, 3, 11, 7, -5, 13, 2, 9, 6]
+const arr = [5, 3, 11, 7, -5, 13, 2, 9, 6];
 
 console.log(`original array: ${arr}`);
 insertionSort(arr);

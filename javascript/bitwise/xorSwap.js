@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 let n = 512;
 let k = 256;
 

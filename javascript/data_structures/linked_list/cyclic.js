@@ -1,5 +1,3 @@
-/* eslint-disable no-console, no-constant-condition */
-const list = require('../../include/linkedList');
 
 const isCyclic = list => {
     let slow = list._head;

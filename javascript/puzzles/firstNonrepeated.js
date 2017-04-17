@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // Note that this implementation assumes that every letter is only one 16-bit char!
 
 const firstNonrepeated = s => {

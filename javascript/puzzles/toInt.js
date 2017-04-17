@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const toInt = s => {
     let i = 0;
     let n = 0;

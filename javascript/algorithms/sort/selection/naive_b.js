@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const swap = (arr, first, second) => {
     const temp = arr[first];
 

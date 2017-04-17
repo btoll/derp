@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const insert = (arr, rightIndex, value) => {
     if (rightIndex < 0 || arr[rightIndex] < value) {
         return arr[rightIndex + 1] = value;

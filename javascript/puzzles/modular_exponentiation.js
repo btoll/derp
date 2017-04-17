@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-//
 // Note that this only works for powers of 2!!
 //
 //     7^1 mod 13 = 7
