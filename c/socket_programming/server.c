@@ -4,7 +4,6 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <errno.h>
 
 #define PORT "1972"
 #define BACKLOG 25
@@ -12,12 +11,16 @@
 // TODO: Add signal handling.
 
 int main(int argc, char **argv) {
+    fd_set master;
+    fd_set readfds;
     struct addrinfo hints, *res, *p;
     struct sockaddr_storage their_addr;
     socklen_t sin_size;
     char s[INET_ADDRSTRLEN], buf[4096];
-    int r, sockfd, new_fd, yes = 1;
+    int r, sockfd, new_fd,
+        fdmax, i, yes = 1;
 
+    memset(&buf, 0, sizeof(buf));
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
@@ -52,56 +55,66 @@ int main(int argc, char **argv) {
 
     if (p == NULL) {
         fprintf(stderr, "server: could not connect\n");
-        exit(1);
+        exit(2);
     }
 
     freeaddrinfo(res);
 
     if ((r = listen(sockfd, BACKLOG)) == -1) {
         perror("listen");
-        exit(1);
+        exit(3);
     }
+
+    fdmax = sockfd;
+    FD_ZERO(&master);
+    FD_ZERO(&readfds);
+    FD_SET(sockfd, &master);
+    FD_SET(0, &readfds);
 
     printf("server: waiting for connections...\n");
 
-    while (1) {
-        sin_size = sizeof(their_addr);
+    for (;;) {
+        readfds = master;
 
-        if ((new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size)) == -1) {
-            perror("accept");
-            exit(1);
+        if ((r = select(fdmax + 1, &readfds, NULL, NULL, NULL)) == -1) {
+            perror("select");
+            exit(4);
         }
 
-        inet_ntop(
-            their_addr.ss_family,
-            &(((struct sockaddr_in *) &their_addr)->sin_addr),
-            s,
-            sizeof(s)
-        );
+        for (i = 0; i <= fdmax; ++i) {
+            if (FD_ISSET(i, &readfds)) {
+                if (i == sockfd) {
+                    sin_size = sizeof(their_addr);
 
-        printf("server: got connection from %s\n", s);
+                    if ((new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size)) == -1) {
+                        perror("accept");
+                        exit(5);
+                    }
 
-        /*
-        if (!fork()) {
-            if ((r = send(new_fd, "hello world", 12, 0)) == -1) {
-                perror("send");
-                exit(1);
+                    inet_ntop(
+                        their_addr.ss_family,
+                        &(((struct sockaddr_in *) &their_addr)->sin_addr),
+                        s,
+                        sizeof(s)
+                    );
+
+                    FD_SET(new_fd, &master);
+                    fdmax = new_fd;
+
+                    printf("server: got connection from %s\n", s);
+                } else {
+                    int nread;
+
+                    if ((nread = recv(i, buf, sizeof(buf), 0)) <= 0) {
+                        fprintf(stderr, "Client hungup, closing socket.");
+                        close(i);
+                        FD_CLR(i, &master);
+                    } else {
+                        write(1, buf, nread);
+                    }
+                }
             }
-
-            close(new_fd);
-            exit(0);
         }
-        */
-
-        memset(&buf, 0, sizeof(buf));
-
-        if ((r = recv(new_fd, buf, sizeof(buf), 0)) == -1) {
-            perror("recv");
-            exit(1);
-        }
-
-        write(1, buf, r);
-        close(new_fd);
     }
 
     return 0;
