@@ -101,12 +101,12 @@ int main(int argc, char **argv) {
                     FD_SET(new_fd, &master);
                     fdmax = new_fd;
 
-                    printf("server: got connection from %s\n", s);
+                    printf("server: got connection from %s %d\n", s, new_fd);
                 } else {
                     int nread;
 
                     if ((nread = recv(i, buf, sizeof(buf), 0)) <= 0) {
-                        fprintf(stderr, "Client hungup, closing socket.");
+                        fprintf(stderr, "Client hung up, closing socket.");
                         close(i);
                         FD_CLR(i, &master);
                     } else {

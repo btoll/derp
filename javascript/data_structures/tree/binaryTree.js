@@ -1,6 +1,6 @@
 'use strict';
 
-const makeNode = (l, r, val, c) => {
+const makeNode = (l, r, val) => {
     let left = l;
     let right = r;
     let value = val;
