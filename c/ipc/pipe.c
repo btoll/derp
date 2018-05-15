@@ -6,9 +6,9 @@
 // Implement `ls | wc -l`
 
 int main(void) {
-    int pfds[2], r;
+    int pfds[2];
 
-    if ((r = pipe(pfds)) == -1) {
+    if (pipe(pfds) == -1) {
         perror("pipe");
         exit(1);
     }
