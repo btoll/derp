@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-// cat pipes.c | grep fork
+// cat another_pipe.c | grep fork
 
 int main(int argc, char **argv) {
     int fd[2];
@@ -16,12 +16,12 @@ int main(int argc, char **argv) {
     if (!fork()) {
         close(fd[0]);
 
-        if (dup2(fd[1], 1) == -1) {
+        if (dup2(fd[1], STDOUT_FILENO) == -1) {
             perror("dup2");
             _exit(1);
         }
 
-        if (execlp("cat", "cat", "pipes.c", NULL) == -1) {
+        if (execlp("cat", "cat", "another_pipe.c", NULL) == -1) {
             perror("execlp");
             _exit(1);
         }
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
         wait(NULL);
         close(fd[1]);
 
-        if (dup2(fd[0], 0) == -1) {
+        if (dup2(fd[0], STDIN_FILENO) == -1) {
             perror("dup2");
             exit(1);
         }
