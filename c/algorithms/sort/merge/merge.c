@@ -5,7 +5,7 @@ int array[10] = { 188, 9, 7, 1, 5, 7777, 4, 3, 1, -99 };
 unsigned int short len = sizeof(array) / sizeof(int);
 
 void merge(unsigned int short p, unsigned int short q, unsigned int short r) {
-    int lowHalfLen = q + 1 - p;
+    int lowHalfLen = q - p + 1;
     int highHalfLen = r - q;
 
     int lowHalf[lowHalfLen];
@@ -18,14 +18,12 @@ void merge(unsigned int short p, unsigned int short q, unsigned int short r) {
 
     while (i < lowHalfLen && j < highHalfLen) {
         if (lowHalf[i] < highHalf[j]) {
-            array[k] = lowHalf[i];
-            i++;
+            array[k] = lowHalf[i++];
         } else {
-            array[k] = highHalf[j];
-            j++;
+            array[k] = highHalf[j++];
         }
 
-        k += 1;
+        k++;
     }
 
     while (i < lowHalfLen) {
