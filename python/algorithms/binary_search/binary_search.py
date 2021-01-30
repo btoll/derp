@@ -1,24 +1,25 @@
-import sys
+nums = [-99, -1, 1, 3, 4, 5, 7, 9, 188, 7777]
 
-array = [-99, -1, 1, 3, 4, 5, 7, 9, 188, 7777]
+def binary_search(p, r, n):
+    if p > r:
+        return -1
 
-def binary_search(min, max, target):
-    if min > max:
-        return False
+    q = (p + r) >> 1
 
-    guess = int((max + min) / 2)
+    if nums[q] == n:
+        return q
 
-    if array[guess] == target:
-        return target
-
-    if array[guess] < target:
-        return binary_search(guess + 1, max, target)
+    if nums[q] < n:
+        return binary_search(q + 1, r, n)
     else:
-        return binary_search(min, guess - 1, target)
+        return binary_search(p, q - 1, n)
 
-def main(argv):
-    print(binary_search(0, len(array) - 1, 1))
+def main():
+#    for i in range(len(nums)):
+#        print(binary_search(0, len(nums), nums[i]))
 
-if __name__ == '__main__':
-    main(sys.argv[1:])
+    return binary_search(0, len(nums), 1)
+
+if __name__ == "__main__":
+    print(main())
 

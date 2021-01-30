@@ -1,12 +1,9 @@
-import sys
-
 def merge(array, p, q, r):
+    lowHalf = array[p:q + 1]
+    highHalf = array[q + 1:r + 1]
     i = 0
     j = 0
     k = p
-
-    lowHalf = array[p:q + 1]
-    highHalf = array[q + 1:r + 1]
 
     while i < len(lowHalf) and j < len(highHalf):
         if lowHalf[i] < highHalf[j]:
@@ -41,11 +38,11 @@ def mergeSort(array, p, r):
     return array
 
 
-def main(argv):
+def main():
     array = [188, 9, 7, 1, 5, 7777, 4, 3, 1, -99]
     print('initial sort order', array)
     print('            sorted', mergeSort(array, 0, len(array) - 1))
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
 
